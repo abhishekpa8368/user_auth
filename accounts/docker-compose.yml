@@ -10,11 +10,26 @@ services:
       - "8000:8000"
     depends_on:
       - db
+    environment:
+      - DEBUG=True
+      - DB_HOST=db
+      - DB_NAME=user_auth_db
+      - DB_USER=user
+      - DB_PASSWORD=password
+    networks:
+      - user_auth_network
+
   db:
     image: postgres:13
     environment:
       POSTGRES_USER: user
       POSTGRES_PASSWORD: password
-      POSTGRES_DB: user_auth_db
+      POSTGRES_DB: user_authdb
     ports:
       - "5432:5432"
+    networks:
+      - user_auth_network
+
+networks:
+  user_auth_network:
+    driver: bridge
